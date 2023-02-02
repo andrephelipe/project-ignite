@@ -1,18 +1,32 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React, { Component } from 'react';
+
+// npm i date-fns ==> https://date-fns.org/ => formataçaõ de data
+import { format, formatDistanceToNow } from 'date-fns';
+import ptBR from 'date-fns/locale/pt-BR';
+
+// Props Validation
+import PropTypes from 'prop-types';
+
+// Components import
 import { Avatar } from './Avatar/Avatar';
 import { Comments } from './Comments';
+
+// Styles import
 import styles from './Post.module.css';
 
 export class Post extends Component {
   render() {
     const { author, content, publishedAt } = this.props;
     const { avatarUrl, name, role } = author;
-    const publishedDateFormatted = new Intl.DateTimeFormat('pt-BR', {
-      day: '2-digit',
-      month: 'long',
-      hour: '2-digit',
-      minute: '2-digit',
+
+    const publishedDateFormatted = format(publishedAt, 'dd \'de\' MMMM \'ás\' H:m', {
+      locale: ptBR,
+    });
+
+    const publishedDateRelativeToNow = formatDistanceToNow(publishedAt, {
+      locale: ptBR,
+      addSuffix: true,
     });
 
     return (
@@ -28,24 +42,23 @@ export class Post extends Component {
             </div>
           </div>
 
-          <time title="20 de janeiro 18:24" dateTime="2023-01-20 18:23:00">
-            { publishedDateFormatted.format(publishedAt) }
+          <time title={ publishedDateFormatted } dateTime={ publishedAt.toISOString() }>
+            { publishedDateRelativeToNow }
           </time>
         </header>
 
         <div className={ styles.content }>
-          <p>Fala galeraa 👋</p>
-          <p>
-            Acabei de subir mais um projeto no meu portifa. É um projeto que fiz
-            no NLW Return, evento da Rocketseat. O nome do projeto é DoctorCare
-            🚀
-          </p>
-          <p>
-            👉
-            {' '}
-            <a>jane.design/doctorcare</a>
-            <p>#novoprojeto #nlw #nlwreturn #doctorcare #rocketseat</p>
-          </p>
+          {
+            content.map((line, i) => {
+              if (line.type === 'paragraph') {
+                return <p key={ i }>{ line.content }</p>;
+              }
+              if (line.type === 'link') {
+                return <a key={ i } href="#">{ line.content }</a>;
+              }
+              return null;
+            })
+          }
         </div>
 
         <form className={ styles.commentForm }>
@@ -59,10 +72,21 @@ export class Post extends Component {
 
         <div className={ styles.commentList }>
           <Comments />
-          <Comments />
-          <Comments />
         </div>
       </article>
     );
   }
 }
+
+Post.propTypes = {
+  author: PropTypes.shape({
+    avatarUrl: PropTypes.string.isRequired,
+    name: PropTypes.string.isRequired,
+    role: PropTypes.string.isRequired,
+  }).isRequired,
+  content: PropTypes.arrayOf(PropTypes.shape({
+    type: PropTypes.oneOf(['paragraph', 'link']).isRequired,
+    content: PropTypes.string.isRequired,
+  })).isRequired,
+  publishedAt: PropTypes.instanceOf(Date).isRequired,
+};
