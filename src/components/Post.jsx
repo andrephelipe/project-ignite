@@ -6,21 +6,30 @@ import styles from './Post.module.css';
 
 export class Post extends Component {
   render() {
+    const { author, content, publishedAt } = this.props;
+    const { avatarUrl, name, role } = author;
+    const publishedDateFormatted = new Intl.DateTimeFormat('pt-BR', {
+      day: '2-digit',
+      month: 'long',
+      hour: '2-digit',
+      minute: '2-digit',
+    });
+
     return (
       <article className={ styles.post }>
         <header>
           <div className={ styles.author }>
             <Avatar
-              src="https://github.com/diego3g.png"
+              src={ avatarUrl }
             />
             <div className={ styles.authorInfo }>
-              <strong>Diego Fernandes</strong>
-              <span>Web developer</span>
+              <strong>{ name }</strong>
+              <span>{ role }</span>
             </div>
           </div>
 
           <time title="20 de janeiro 18:24" dateTime="2023-01-20 18:23:00">
-            Publicado há 1h
+            { publishedDateFormatted.format(publishedAt) }
           </time>
         </header>
 
