@@ -1,3 +1,4 @@
+/* eslint-disable indent */
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React, { Component } from 'react';
 
@@ -19,8 +20,8 @@ export class Post extends Component {
   render() {
     const { author, content, publishedAt } = this.props;
     const { avatarUrl, name, role } = author;
-
-    const publishedDateFormatted = format(publishedAt, 'dd \'de\' MMMM \'ás\' H:m', {
+                                                        // "dd 'de' MMMM 'ás' H:m:ss"
+    const publishedDateFormatted = format(publishedAt, 'dd \'de\' MMMM \'ás\' H:m:ss', {
       locale: ptBR,
     });
 

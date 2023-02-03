@@ -95,7 +95,7 @@ export class App extends Component {
             content: '#novoprojeto #nlw #nlwreturn #doctorcare #rocketseat',
           },
         ],
-        publishedAt: new Date('2023-02-10 16:52:00'),
+        publishedAt: new Date('2022-08-11 16:52:00'),
       },
     ];
 
