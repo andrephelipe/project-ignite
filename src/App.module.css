@@ -10,10 +10,22 @@
 }
 
 @media (max-width: 768px){
+  html {
+    font-size: 87.5%;
+  }
+
   .wrapper {
     grid-template-columns: 1fr;
   }
 }
+
+/* 
+  16 - 100%
+  14 - x
+
+  16x = 1400
+  x = 87,5%
+*/
 
 
 /* 
